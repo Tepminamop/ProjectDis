@@ -3,7 +3,13 @@
 Game::Game(QWidget* parent) :
     QGraphicsView(parent)
 {
-    info = new QLabel("Turn 0");
+    info = new QLabel("");
+
+    def = new QPushButton();
+    def->setFixedSize(50, 50);
+    def->setIcon(QIcon("D:/Qt/Images/shield.png"));
+    def->setIconSize(QSize(40, 40));
+    connect(def, &QPushButton::clicked, this, &Game::onDef);
 
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 1918, 1078);
@@ -46,13 +52,14 @@ Game::Game(QWidget* parent) :
         scene->addItem(team2[i]);
     }
     scene->addWidget(info);
+    scene->addWidget(def)->setPos(0, 1028);
     scene->setBackgroundBrush(QBrush(QImage("D:/Qt/Images/field1.png")));
     this->setScene(scene);
     play();
 }
 
 void Game::mousePressEvent(QMouseEvent *event) {
-    qDebug() << "View event" << '\n';//добавить очередность ходов, возможность сделать статический флаг
+    qDebug() << "View event" << '\n';//добавить очередность ходов, возможно сделать статический флаг
     QGraphicsView::mousePressEvent(event);
     if (canPlay) {
         canPlay = false;
@@ -96,6 +103,16 @@ int Game::getWhite() {
 
 void Game::setWhite(int pos) {
     white = pos;
+}
+
+void Game::onDef() {
+    qDebug() << "Def" << '\n';
+    if (turn == 1)
+        team1[currentPos]->getUnit().setDef(true);
+    else if (turn == 2)
+        team1[currentPos]->getUnit().setDef(true);
+
+    play();
 }
 
 void Game::play() {
@@ -171,6 +188,8 @@ void Game::play() {
     if (turn == 1) {
         currentUnit = team1[maxPos1]->getUnit();
         currentPos = maxPos1;
+        if (team1[maxPos1]->getUnit().inDef())
+            team1[maxPos1]->getUnit().setDef(false);
         info->setText("Turn 1");
         team1[maxPos1]->getHp()->setStyleSheet("QLabel { color : white; }");
         setWhite(maxPos1);
@@ -180,6 +199,8 @@ void Game::play() {
         info->setText("Turn 2");
         currentUnit = team2[maxPos2]->getUnit();
         currentPos = maxPos2;
+        if (team2[maxPos2]->getUnit().inDef())
+            team2[maxPos2]->getUnit().setDef(false);
         team2[maxPos2]->getHp()->setStyleSheet("QLabel { color : white; }");
         setWhite(maxPos2);
         fought2.insert(maxPos2);

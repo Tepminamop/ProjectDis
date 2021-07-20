@@ -4,7 +4,7 @@
 #include <QDebug>
 
 Units::Units(QString _name) :
-    name(_name)
+    name(_name), inDefence(false)
 {
     counter++;
     if (counter == 1)
@@ -70,4 +70,11 @@ int Units::getInitiative() {
 
 int Units::getDamage() {
     return damage;
+}
+
+bool Units::inDef() {
+    return inDefence;
+}
+void Units::setDef(bool b) {
+    inDefence = b;
 }

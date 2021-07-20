@@ -12,6 +12,8 @@ public:
     int getHp();
     int getInitiative();
     int getDamage();
+    bool inDef();
+    void setDef(bool b);
     void setHp(int damage);
     void setInitiative(int ini);
     friend std::ostream& operator<< (std::ostream &out, const Units &unit);

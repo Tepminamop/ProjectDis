@@ -4,8 +4,10 @@
 #include <iostream>
 #include <QLabel>
 #include <QGraphicsView>
+#include <QApplication>
 #include <QGraphicsProxyWidget>
 #include <QMovie>
+#include <QPushButton>
 #include <ctime>
 #include <vector>
 #include <string>
@@ -38,6 +40,7 @@ public:
     static set<int> dead2;
     static int currentPos;
 private:
+    QPushButton* def;
     set<int> fought1;
     set<int> fought2;
     int white;
@@ -49,4 +52,6 @@ private:
     qreal y2 = 790;
 protected:
     void mousePressEvent(QMouseEvent *event);
+private slots:
+    void onDef();
 };
